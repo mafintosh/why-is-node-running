@@ -32,15 +32,19 @@ Running the above will print
 There are 4 known handle(s) keeping the process running and 0 unknown
 Known handles:
 
+# Timer
 /Users/maf/dev/node_modules/why-is-node-running/example.js:6  - setInterval(function () {}, 1000)
 /Users/maf/dev/node_modules/why-is-node-running/example.js:10 - createServer()
 
+# TCP
 /Users/maf/dev/node_modules/why-is-node-running/example.js:7  - server.listen(0)
 /Users/maf/dev/node_modules/why-is-node-running/example.js:10 - createServer()
 
+# TCP
 /Users/maf/dev/node_modules/why-is-node-running/example.js:7  - server.listen(0)
 /Users/maf/dev/node_modules/why-is-node-running/example.js:11 - createServer()
 
+# Timer
 /Users/maf/dev/node_modules/why-is-node-running/example.js:13 - setTimeout(function () {
 ```
 

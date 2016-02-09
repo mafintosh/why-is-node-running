@@ -14,10 +14,10 @@ process.binding = function (name) {
         var stacks = require('stackback')(e)
         var path = require('path')
 
-        handle.__WHY_IS_NODE_RUNNING__ = []
+        handle.__WHY_IS_NODE_RUNNING__ = {stacks: [], wrapped: loaded[prop]}
 
         for (var i = 1; i < stacks.length; i++) {
-          handle.__WHY_IS_NODE_RUNNING__.push(stacks[i])
+          handle.__WHY_IS_NODE_RUNNING__.stacks.push(stacks[i])
         }
 
         return handle
@@ -59,10 +59,14 @@ module.exports = function () {
 
   console.error('There are %d known handle(s) keeping the process running and %d unknown', known.length, unknown)
   console.error('Known handles:\n')
-  known.forEach(function (stacks, i) {
+  known.forEach(function (obj, i) {
+    var stacks = obj.stacks
+
     stacks = stacks.filter(function (s) {
       return s.getFileName().indexOf(require('path').sep) > -1
     })
+
+    console.error('# %s', obj.wrapped.name)
 
     if (!stacks[0]) {
       console.error('(unknown stack trace)')
