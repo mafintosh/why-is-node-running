@@ -9,7 +9,7 @@ npm install why-is-node-running
 ## Usage
 
 ``` js
-var log = require('why-is-node-running')
+var log = require('why-is-node-running') // should be your first require
 var net = require('net')
 
 function createServer () {
