@@ -9,7 +9,14 @@ process.binding = function (name) {
   Object.keys(loaded).forEach(function (prop) {
     if (typeof loaded[prop] === 'function' && loaded[prop].prototype) {
       var wrap = function () {
-        var handle = new loaded[prop]()
+        var handle
+
+        if (arguments.length === 4) handle = new loaded[prop](arguments[0], arguments[1], arguments[2], arguments[3])
+        else if (arguments.length === 3) handle = new loaded[prop](arguments[0], arguments[1], arguments[2])
+        else if (arguments.length === 2) handle = new loaded[prop](arguments[0], arguments[1])
+        else if (arguments.length === 1) handle = new loaded[prop](arguments[0])
+        else handle = new loaded[prop]()
+
         var e = new Error('whatevs')
         var stacks = require('stackback')(e)
         var path = require('path')
