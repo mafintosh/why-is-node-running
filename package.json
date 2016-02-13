@@ -6,7 +6,9 @@
   "dependencies": {
     "stackback": "0.0.2"
   },
-  "devDependencies": {},
+  "bin": {
+    "why-is-node-running": "cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mafintosh/why-is-node-running.git"
