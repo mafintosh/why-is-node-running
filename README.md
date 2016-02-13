@@ -3,7 +3,7 @@
 Node is running but you don't know why? why-is-node-running is here to help you.
 
 ```
-npm install why-is-node-running
+$ npm install why-is-node-running
 ```
 
 ## Usage
@@ -46,6 +46,26 @@ Known handles:
 
 # Timer
 /Users/maf/dev/node_modules/why-is-node-running/example.js:13 - setTimeout(function () {
+```
+
+## CLI
+
+You can also run `why-is-node-running` standalone if you don't want to include it inside your code. Sending `SIGUSR1` signal to the process will produce the log.
+
+```
+$ npm install why-is-node-running -g
+```
+
+```
+$ why-is-node-running /path/to/some/file.js
+probing module /path/to/some/file.js
+kill -SIGUSR1 31115 for logging
+```
+
+To trigger the log do:
+
+```
+$ kill -SIGUSR1 31115
 ```
 
 ## License
