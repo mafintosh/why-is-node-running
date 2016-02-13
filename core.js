@@ -105,7 +105,7 @@ NativeModule.prototype.compile = function() {
     lineOffset: 0,
     displayErrors: true
   });
-  fn(this.exports, NativeModule.require, this, this.filename);
+  fn(this.exports, require, this, this.filename);
 
   this.loaded = true;
 };
