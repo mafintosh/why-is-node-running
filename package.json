@@ -13,6 +13,13 @@
     "type": "git",
     "url": "https://github.com/mafintosh/why-is-node-running.git"
   },
+  "keywords": [
+    "debug",
+    "devops",
+    "test",
+    "events",
+    "handles"
+  ],
   "author": "Mathias Buus (@mafintosh)",
   "license": "MIT",
   "bugs": {
