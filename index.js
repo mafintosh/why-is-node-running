@@ -84,9 +84,13 @@ module.exports = function () {
         if (pad.length > padding.length) padding = pad
       })
       stacks.forEach(function (s) {
-        var src = require('fs').readFileSync(s.getFileName(), 'utf-8').split(/\n|\r\n/)
         var prefix = s.getFileName() + ':' + s.getLineNumber()
-        console.error(prefix + padding.slice(prefix.length) + ' - ' + src[s.getLineNumber() - 1].trim())
+        try {
+          var src = require('fs').readFileSync(s.getFileName(), 'utf-8').split(/\n|\r\n/)
+          console.error(prefix + padding.slice(prefix.length) + ' - ' + src[s.getLineNumber() - 1].trim())
+        } catch (e) {
+          console.error(prefix + padding.slice(prefix.length))
+        }
       })
     }
     console.error()
