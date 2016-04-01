@@ -3,7 +3,7 @@
 var path         = require('path')
 var readFileSync = require('fs').readFileSync
 
-var why = require('./')
+var why = require('.')
 
 
 var prog = path.resolve(process.argv[2])

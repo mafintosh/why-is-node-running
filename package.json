@@ -2,13 +2,11 @@
   "name": "why-is-node-running",
   "version": "1.2.2",
   "description": "Node is running but you don't know why? why-is-node-running is here to help you.",
-  "main": "index.js",
+  "main": "lib",
   "dependencies": {
     "stackback": "0.0.2"
   },
-  "bin": {
-    "why-is-node-running": "cli.js"
-  },
+  "bin": "server.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/mafintosh/why-is-node-running.git"
