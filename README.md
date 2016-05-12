@@ -26,7 +26,7 @@ setTimeout(function () {
 }, 100)
 ```
 
-Running the above will print
+Run the above script like this: `node --expose-internals theScript.js`. It will print the following:
 
 ```
 There are 4 known handle(s) keeping the process running and 0 unknown
