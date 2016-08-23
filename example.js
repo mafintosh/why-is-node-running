@@ -1,5 +1,7 @@
-var log = require('why-is-node-running')
+var why = require('why-is-node-running')
+
 var net = require('net')
+
 
 function createServer () {
   var server = net.createServer()
@@ -7,9 +9,10 @@ function createServer () {
   server.listen(0)
 }
 
+
 createServer()
 createServer()
 
 setTimeout(function () {
-  log()
+  console.error(why())
 }, 100)

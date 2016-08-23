@@ -2,15 +2,17 @@
 
 Node is running but you don't know why? why-is-node-running is here to help you.
 
-```
-$ npm install why-is-node-running
+```sh
+npm install why-is-node-running
 ```
 
 ## Usage
 
-``` js
+```js
 var log = require('why-is-node-running') // should be your first require
+
 var net = require('net')
+
 
 function createServer () {
   var server = net.createServer()
@@ -18,11 +20,12 @@ function createServer () {
   server.listen(0)
 }
 
+
 createServer()
 createServer()
 
 setTimeout(function () {
-  log() // logs out active handles that are keeping node running
+  console.error(why())  // logs out active handles that are keeping node running
 }, 100)
 ```
 
@@ -52,20 +55,20 @@ Known handles:
 
 You can also run `why-is-node-running` standalone if you don't want to include it inside your code. Sending `SIGUSR1` signal to the process will produce the log.
 
-```
-$ npm install why-is-node-running -g
+```sh
+npm install why-is-node-running -g
 ```
 
-```
-$ why-is-node-running /path/to/some/file.js
+```sh
+why-is-node-running /path/to/some/file.js
 probing module /path/to/some/file.js
 kill -SIGUSR1 31115 for logging
 ```
 
 To trigger the log do:
 
-```
-$ kill -SIGUSR1 31115
+```sh
+kill -SIGUSR1 31115
 ```
 
 ## License
