@@ -50,7 +50,7 @@ process.binding = function (name) {
 core.globalTimeouts()
 
 module.exports = function (logger) {
-  logger = logger || console;
+  logger = logger || console
   var handles = process._getActiveHandles()
   var unknown = 0
   var known = []
