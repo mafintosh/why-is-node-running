@@ -49,7 +49,8 @@ process.binding = function (name) {
 
 core.globalTimeouts()
 
-module.exports = function () {
+module.exports = function (logger) {
+  logger = logger || console
   var handles = process._getActiveHandles()
   var unknown = 0
   var known = []
@@ -64,8 +65,8 @@ module.exports = function () {
     unknown++
   })
 
-  console.error('There are %d known handle(s) keeping the process running and %d unknown', known.length, unknown)
-  console.error('Known handles:\n')
+  logger.error('There are %d known handle(s) keeping the process running and %d unknown', known.length, unknown)
+  logger.error('Known handles:\n')
   known.forEach(function (obj, i) {
     var stacks = obj.stacks
 
@@ -73,10 +74,10 @@ module.exports = function () {
       return s.getFileName().indexOf(require('path').sep) > -1
     })
 
-    console.error('# %s', obj.wrapped.name)
+    logger.error('# %s', obj.wrapped.name)
 
     if (!stacks[0]) {
-      console.error('(unknown stack trace)')
+      logger.error('(unknown stack trace)')
     } else {
       var padding = ''
       stacks.forEach(function (s) {
@@ -87,13 +88,13 @@ module.exports = function () {
         var prefix = s.getFileName() + ':' + s.getLineNumber()
         try {
           var src = require('fs').readFileSync(s.getFileName(), 'utf-8').split(/\n|\r\n/)
-          console.error(prefix + padding.slice(prefix.length) + ' - ' + src[s.getLineNumber() - 1].trim())
+          logger.error(prefix + padding.slice(prefix.length) + ' - ' + src[s.getLineNumber() - 1].trim())
         } catch (e) {
-          console.error(prefix + padding.slice(prefix.length))
+          logger.error(prefix + padding.slice(prefix.length))
         }
       })
     }
-    console.error()
+    logger.error()
   })
 }
 
