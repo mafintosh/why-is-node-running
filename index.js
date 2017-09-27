@@ -19,7 +19,6 @@ process.binding = function (name) {
 
         var e = new Error('whatevs')
         var stacks = require('stackback')(e)
-        var path = require('path')
 
         handle.__WHY_IS_NODE_RUNNING__ = {stacks: [], wrapped: loaded[prop]}
 
@@ -52,20 +51,19 @@ core.globalTimeouts()
 module.exports = function (logger) {
   logger = logger || console
   var handles = process._getActiveHandles()
-  var unknown = 0
+  var unknown = []
   var known = []
 
   handles.forEach(function (handle) {
     var stacks = findStacks(handle, 0)
     if (stacks) {
       known.push(stacks)
-      return
+    } else {
+      unknown.push(handle)
     }
-
-    unknown++
   })
 
-  logger.error('There are %d known handle(s) keeping the process running and %d unknown', known.length, unknown)
+  logger.error('There are %d known handle(s) keeping the process running and %d unknown', known.length, unknown.length)
   logger.error('Known handles:\n')
   known.forEach(function (obj, i) {
     var stacks = obj.stacks
@@ -94,7 +92,13 @@ module.exports = function (logger) {
         }
       })
     }
-    logger.error()
+
+    logger.error('\nUnknown handles:\n')
+
+    unknown.forEach(function (stack) {
+      logger.error(stack)
+      logger.error()
+    })
   })
 }
 
