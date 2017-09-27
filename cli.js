@@ -1,12 +1,17 @@
 #!/usr/bin/env node
 
-var why = require('./')
+var spawn = require('child_process').spawn
 var path = require('path')
+
 var prog = path.resolve(process.argv[2])
 
 console.log('probing program', prog)
 console.log('kill -SIGUSR1', process.pid, 'for logging')
 
-require(prog)
-
-process.on('SIGUSR1', why)
+var nodeArgs = [
+  '--expose-internals',
+  '-r',
+  path.join(__dirname, 'include.js')
+]
+var nodeOpts = { stdio: 'inherit' }
+spawn('node', nodeArgs.concat(prog), nodeOpts)
