@@ -69,7 +69,8 @@ module.exports = function (logger) {
     var stacks = obj.stacks
 
     stacks = stacks.filter(function (s) {
-      return s.getFileName().indexOf(require('path').sep) > -1
+      var fileName = s.getFileName()
+      return fileName && fileName.indexOf(require('path').sep) > -1
     })
 
     logger.error('# %s', obj.wrapped.name)
