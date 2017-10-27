@@ -92,13 +92,12 @@ module.exports = function (logger) {
         }
       })
     }
+  })
 
-    logger.error('\nUnknown handles:\n')
-
-    unknown.forEach(function (stack) {
-      logger.error(stack)
-      logger.error()
-    })
+  logger.error('\nUnknown handles:\n')
+  unknown.forEach(function (stack) {
+    logger.error(stack)
+    logger.error()
   })
 }
 
