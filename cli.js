@@ -9,7 +9,6 @@ console.log('probing program', prog)
 console.log('kill -SIGUSR1', process.pid, 'for logging')
 
 var nodeArgs = [
-  '--expose-internals',
   '-r',
   path.join(__dirname, 'include.js')
 ]
