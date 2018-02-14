@@ -1,4 +1,4 @@
-var log = require('why-is-node-running')
+var log = require('./')
 var net = require('net')
 
 function createServer () {

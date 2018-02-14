@@ -26,26 +26,29 @@ setTimeout(function () {
 }, 100)
 ```
 
-Run the above script like this: `node --expose-internals example.js`. It will print the following:
+Run the above script like this: `node example.js`. It will print the following:
 
 ```
-There are 4 known handle(s) keeping the process running and 0 unknown
-Known handles:
+There are 5 handle(s) keeping the process running
 
-# Timer
-/Users/maf/dev/node_modules/why-is-node-running/example.js:6  - setInterval(function () {}, 1000)
-/Users/maf/dev/node_modules/why-is-node-running/example.js:10 - createServer()
+# Timeout
+/home/maf/dev/node_modules/why-is-node-running/example.js:6  - setInterval(function () {}, 1000)
+/home/maf/dev/node_modules/why-is-node-running/example.js:10 - createServer()
 
-# TCP
-/Users/maf/dev/node_modules/why-is-node-running/example.js:7  - server.listen(0)
-/Users/maf/dev/node_modules/why-is-node-running/example.js:10 - createServer()
+# TCPSERVERWRAP
+/home/maf/dev/node_modules/why-is-node-running/example.js:7  - server.listen(0)
+/home/maf/dev/node_modules/why-is-node-running/example.js:10 - createServer()
 
-# TCP
-/Users/maf/dev/node_modules/why-is-node-running/example.js:7  - server.listen(0)
-/Users/maf/dev/node_modules/why-is-node-running/example.js:11 - createServer()
+# Timeout
+/home/maf/dev/node_modules/why-is-node-running/example.js:6  - setInterval(function () {}, 1000)
+/home/maf/dev/node_modules/why-is-node-running/example.js:11 - createServer()
 
-# Timer
-/Users/maf/dev/node_modules/why-is-node-running/example.js:13 - setTimeout(function () {
+# TCPSERVERWRAP
+/home/maf/dev/node_modules/why-is-node-running/example.js:7  - server.listen(0)
+/home/maf/dev/node_modules/why-is-node-running/example.js:11 - createServer()
+
+# Timeout
+/home/maf/dev/node_modules/why-is-node-running/example.js:13 - setTimeout(function () {
 ```
 
 ## CLI
