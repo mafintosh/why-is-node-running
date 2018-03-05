@@ -1,3 +1,3 @@
 var why = require('./')
 
-process.on('SIGUSR1', why)
+process.on('SIGUSR1', function() { why() })
