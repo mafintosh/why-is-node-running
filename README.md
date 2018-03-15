@@ -7,13 +7,13 @@ Node is running but you don't know why? `why-is-node-running` is here to help yo
 Node 8 and above:
 
 ```bash
-npm i why-is-node-running
+npm i why-is-node-running -g
 ```
 
 Earlier Node versions (no longer supported):
 
 ```bash
-npm i why-is-node-running@v1.x
+npm i why-is-node-running@v1.x -g
 ```
 
 ## Usage
