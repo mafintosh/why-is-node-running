@@ -1,13 +1,16 @@
 {
   "name": "why-is-node-running",
   "version": "2.0.2",
-  "description": "Node is running but you don't know why? why-is-node-running is here to help you.",
+  "description": "Determine why a node process won't exit",
   "main": "index.js",
   "dependencies": {
     "stackback": "0.0.2"
   },
   "bin": {
     "why-is-node-running": "cli.js"
+  },
+  "engines": {
+    "node": ">=8"
   },
   "repository": {
     "type": "git",
@@ -20,7 +23,13 @@
     "events",
     "handles"
   ],
-  "author": "Mathias Buus (@mafintosh)",
+  "author": "Mathias Buus <mathiasbuus@gmail.com>",
+  "contributors": [
+    {
+      "name": "Jon Peck",
+      "email": "jpeck@fluxsauce.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mafintosh/why-is-node-running/issues"
