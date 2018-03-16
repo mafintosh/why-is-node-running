@@ -9,6 +9,9 @@
   "bin": {
     "why-is-node-running": "cli.js"
   },
+  "engines": {
+    "node": ">=8"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mafintosh/why-is-node-running.git"
@@ -21,6 +24,12 @@
     "handles"
   ],
   "author": "Mathias Buus (@mafintosh)",
+  "contributors": [
+    {
+      "name": "Jon Peck",
+      "email": "jpeck@fluxsauce.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mafintosh/why-is-node-running/issues"
