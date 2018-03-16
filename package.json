@@ -1,7 +1,7 @@
 {
   "name": "why-is-node-running",
   "version": "2.0.2",
-  "description": "Determine why a node process won't exit",
+  "description": "Node is running but you don't know why? why-is-node-running is here to help you.",
   "main": "index.js",
   "dependencies": {
     "stackback": "0.0.2"
@@ -23,7 +23,7 @@
     "events",
     "handles"
   ],
-  "author": "Mathias Buus <mathiasbuus@gmail.com>",
+  "author": "Mathias Buus (@mafintosh)",
   "contributors": [
     {
       "name": "Jon Peck",

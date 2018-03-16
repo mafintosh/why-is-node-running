@@ -19,21 +19,21 @@ npm i why-is-node-running@v1.x -g
 ## Usage
 
 ```js
-const log = require('why-is-node-running'); // should be your first require
-const net = require('net');
+const log = require('why-is-node-running') // should be your first require
+const net = require('net')
 
 function createServer () {
-  const server = net.createServer();
-  setInterval(function () {}, 1000);
-  server.listen(0);
+  const server = net.createServer()
+  setInterval(function () {}, 1000)
+  server.listen(0)
 }
 
-createServer();
-createServer();
+createServer()
+createServer()
 
 setTimeout(function () {
-  log(); // logs out active handles that are keeping node running
-}, 100);
+  log() // logs out active handles that are keeping node running
+}, 100)
 ```
 
 Save the file as `example.js`, then execute:
