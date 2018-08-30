@@ -3,9 +3,9 @@
 var spawn = require('child_process').spawn
 var path = require('path')
 
-var prog = path.resolve(process.argv[2])
+var prog = process.argv.slice(2)
 
-console.log('probing program', prog)
+console.log('probing program', prog.join(' '))
 
 var nodeArgs = [
   '-r',
