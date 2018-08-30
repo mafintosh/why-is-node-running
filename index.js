@@ -7,7 +7,7 @@ var sep = path.sep
 var active = new Map()
 var hook = asyncHooks.createHook({
   init (asyncId, type) {
-    if (type === 'TIMERWRAP') return
+    if (type === 'TIMERWRAP' || type === 'PROMISE') return
     var err = new Error('whatevs')
     var stacks = stackback(err)
     active.set(asyncId, {type, stacks})
