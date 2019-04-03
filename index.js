@@ -23,9 +23,8 @@ module.exports = whyIsNodeRunning
 function whyIsNodeRunning (logger) {
   if (!logger) logger = console
 
-  hook.disable()
   logger.error('There are %d handle(s) keeping the process running', active.size)
-  for (const o of active.values()) printStacks(o)
+  for (const o of [...active.values()]) printStacks(o)
 
   function printStacks (o) {
     var stacks = o.stacks.slice(1).filter(function (s) {
