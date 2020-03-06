@@ -6,11 +6,11 @@ var sep = path.sep
 
 var active = new Map()
 var hook = asyncHooks.createHook({
-  init (asyncId, type) {
+  init (asyncId, type, triggerAsyncId, resource) {
     if (type === 'TIMERWRAP' || type === 'PROMISE') return
     var err = new Error('whatevs')
     var stacks = stackback(err)
-    active.set(asyncId, {type, stacks})
+    active.set(asyncId, {type, stacks, resource})
   },
   destroy (asyncId) {
     active.delete(asyncId)
@@ -24,8 +24,13 @@ function whyIsNodeRunning (logger) {
   if (!logger) logger = console
 
   hook.disable()
-  logger.error('There are %d handle(s) keeping the process running', active.size)
-  for (const o of active.values()) printStacks(o)
+  var activeResources = [...active.values()].filter(function(r) {
+    if (r.type === 'Timeout' && !r.resource.hasRef()) return false
+    return true
+  })
+
+  logger.error('There are %d handle(s) keeping the process running', activeResources.length)
+  for (const o of activeResources) printStacks(o)
 
   function printStacks (o) {
     var stacks = o.stacks.slice(1).filter(function (s) {
