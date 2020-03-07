@@ -67,6 +67,9 @@ There are 5 handle(s) keeping the process running
 /home/maf/dev/node_modules/why-is-node-running/example.js:13 - setTimeout(function () {
 ```
 
+**Important Note!**
+`unref`ed timers do not prevent the Node process from exiting. If you are running with Node v11.0.0 and above, `unref`ed timers will not be listed in the above list. Unfortunately, this is not supported in node versions below v11.0.0.
+
 ## CLI
 
 You can also run `why-is-node-running` as a standalone if you don't want to include it inside your code. Sending `SIGUSR1` signal to the process will produce the log.
