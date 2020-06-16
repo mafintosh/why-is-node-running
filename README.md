@@ -72,7 +72,7 @@ There are 5 handle(s) keeping the process running
 
 ## CLI
 
-You can also run `why-is-node-running` as a standalone if you don't want to include it inside your code. Sending `SIGUSR1` signal to the process will produce the log.
+You can also run `why-is-node-running` as a standalone if you don't want to include it inside your code. Sending `SIGUSR1`/`SIGINFO` signal to the process will produce the log. (`Ctrl + T` on macOS and BSD systems)
 
 ```bash
 why-is-node-running /path/to/some/file.js
@@ -88,6 +88,16 @@ To trigger the log:
 ```
 kill -SIGUSR1 31115
 ```
+
+## Require CLI Option
+
+You can also use the node `-r` option to include `why-is-node-running`:
+
+```bash
+node -r why-is-node-running/include /path/to/some/file.js
+```
+
+The steps are otherwise the same as the above CLI section
 
 ## License
 
