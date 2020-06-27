@@ -20,9 +20,7 @@ var hook = asyncHooks.createHook({
 hook.enable()
 module.exports = whyIsNodeRunning
 
-function whyIsNodeRunning (logger) {
-  if (!logger) logger = console
-
+function whyIsNodeRunning (logger = console) {
   hook.disable()
   var activeResources = [...active.values()].filter(function(r) {
     if (
