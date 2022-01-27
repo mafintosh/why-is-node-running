@@ -8,6 +8,7 @@ var active = new Map()
 var hook = asyncHooks.createHook({
   init (asyncId, type, triggerAsyncId, resource) {
     if (type === 'TIMERWRAP' || type === 'PROMISE') return
+    if (type === 'PerformanceObserver' || type === 'RANDOMBYTESREQUEST') return
     var err = new Error('whatevs')
     var stacks = stackback(err)
     active.set(asyncId, {type, stacks, resource})
