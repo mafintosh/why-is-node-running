@@ -27,7 +27,6 @@ function whyIsNodeRunning (logger) {
   hook.disable()
   var activeResources = [...active.values()].filter(function(r) {
     if (
-      r.type === 'Timeout' &&
       typeof r.resource.hasRef === 'function'
       && !r.resource.hasRef()
     ) return false
