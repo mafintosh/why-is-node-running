@@ -7,7 +7,7 @@ Node is running but you don't know why? `why-is-node-running` is here to help yo
 Node 8 and above:
 
 ```bash
-npm i why-is-node-running -g
+npm i -D why-is-node-running
 ```
 
 Earlier Node versions (no longer supported):
@@ -31,9 +31,8 @@ function createServer () {
 createServer()
 createServer()
 
-setTimeout(function () {
-  log() // logs out active handles that are keeping node running
-}, 100)
+// log out active handles that are keeping node running every 100ms
+setTimeout(log, 100)
 ```
 
 Save the file as `example.js`, then execute:
