@@ -70,6 +70,13 @@ There are 5 handle(s) keeping the process running
 **Important Note!**
 `unref`ed timers do not prevent the Node process from exiting. If you are running with Node v11.0.0 and above, `unref`ed timers will not be listed in the above list. Unfortunately, this is not supported in node versions below v11.0.0.
 
+## Investigate why its running longer than X minutes
+```bash
+# Send signal after 3 minutes to find out what is going on
+timeout -s SIGUSR1 3m node -r why-is-node-running/include /path/to/myscript.js
+```
+
+
 ## CLI
 
 You can also run `why-is-node-running` as a standalone if you don't want to include it inside your code. Sending `SIGUSR1`/`SIGINFO` signal to the process will produce the log. (`Ctrl + T` on macOS and BSD systems)
