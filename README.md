@@ -78,6 +78,12 @@ You can also run `why-is-node-running` as a standalone if you don't want to incl
 why-is-node-running /path/to/some/file.js
 ```
 
+Alternatively if you do not want to install the package globally, you can run it with `npx`:
+
+```bash
+npx why-is-node-running /path/to/some/file.js
+```
+
 ```
 probing module /path/to/some/file.js
 kill -SIGUSR1 31115 for logging
