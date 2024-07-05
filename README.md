@@ -19,8 +19,8 @@ npm i why-is-node-running@v1.x -g
 ## Usage
 
 ```js
-const log = require('why-is-node-running') // should be your first require
-const net = require('net')
+import why from 'why-is-node-running' // should be your first import
+import net from 'node:net'
 
 function createServer () {
   const server = net.createServer()
@@ -32,7 +32,7 @@ createServer()
 createServer()
 
 setTimeout(function () {
-  log() // logs out active handles that are keeping node running
+  why() // logs out active handles that are keeping node running
 }, 100)
 ```
 
@@ -89,12 +89,12 @@ To trigger the log:
 kill -SIGUSR1 31115
 ```
 
-## Require CLI Option
+## Import CLI Option
 
-You can also use the node `-r` option to include `why-is-node-running`:
+You can also use Node's [`--import`](https://nodejs.org/api/cli.html#--importmodule) option to preload `why-is-node-running`:
 
 ```bash
-node -r why-is-node-running/include /path/to/some/file.js
+node --import why-is-node-running/include /path/to/some/file.js
 ```
 
 The steps are otherwise the same as the above CLI section
