@@ -39,7 +39,7 @@ function whyIsNodeRunning (logger) {
   function printStacks (o) {
     var stacks = o.stacks.slice(1).filter(function (s) {
       var filename = s.getFileName()
-      return filename && filename.indexOf(sep) > -1 && filename.indexOf('internal' + sep) !== 0
+      return filename && filename.indexOf(sep) > -1 && filename.indexOf('internal' + sep) !== 0 && filename.indexOf('node:internal' + sep) !== 0
     })
 
     logger.error('')
