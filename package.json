@@ -1,8 +1,12 @@
 {
   "name": "why-is-node-running",
+  "type": "module",
   "version": "2.3.0",
   "description": "Node is running but you don't know why? why-is-node-running is here to help you.",
-  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./includes": "./include.js"
+  },
   "dependencies": {
     "siginfo": "^2.0.0",
     "stackback": "0.0.2"
@@ -11,7 +15,7 @@
     "why-is-node-running": "cli.js"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=20.11"
   },
   "repository": {
     "type": "git",

@@ -1,5 +1,5 @@
-var log = require('./')
-var net = require('net')
+import why from './index.js'
+import net from 'node:net'
 
 function createServer () {
   var server = net.createServer()
@@ -11,5 +11,5 @@ createServer()
 createServer()
 
 setTimeout(function () {
-  log()
+  why()
 }, 100)

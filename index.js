@@ -1,7 +1,9 @@
-var asyncHooks = require('async_hooks')
-var stackback = require('stackback')
-var path = require('path')
-var fs = require('fs')
+import asyncHooks from 'node:async_hooks'
+import fs from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import stackback from 'stackback'
+
 var sep = path.sep
 
 var active = new Map()
@@ -19,9 +21,8 @@ var hook = asyncHooks.createHook({
 })
 
 hook.enable()
-module.exports = whyIsNodeRunning
 
-function whyIsNodeRunning (logger) {
+export default function whyIsNodeRunning (logger) {
   if (!logger) logger = console
 
   hook.disable()
@@ -50,13 +51,13 @@ function whyIsNodeRunning (logger) {
     } else {
       var padding = ''
       stacks.forEach(function (s) {
-        var pad = (s.getFileName() + ':' + s.getLineNumber()).replace(/./g, ' ')
+        var pad = (normalizeFileName(s.getFileName()) + ':' + s.getLineNumber()).replace(/./g, ' ')
         if (pad.length > padding.length) padding = pad
       })
       stacks.forEach(function (s) {
-        var prefix = s.getFileName() + ':' + s.getLineNumber()
+        var prefix = normalizeFileName(s.getFileName()) + ':' + s.getLineNumber()
         try {
-          var src = fs.readFileSync(s.getFileName(), 'utf-8').split(/\n|\r\n/)
+          var src = fs.readFileSync(normalizeFileName(s.getFileName()), 'utf-8').split(/\n|\r\n/)
           logger.error(prefix + padding.slice(prefix.length) + ' - ' + src[s.getLineNumber() - 1].trim())
         } catch (e) {
           logger.error(prefix + padding.slice(prefix.length))
@@ -64,4 +65,8 @@ function whyIsNodeRunning (logger) {
       })
     }
   }
+}
+
+function normalizeFileName(fileName) {
+  return fileName.startsWith('file://') ? fileURLToPath(fileName) : fileName
 }

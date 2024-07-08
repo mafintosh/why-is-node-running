@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-var spawn = require('child_process').spawn
-var path = require('path')
+import { spawn } from 'node:child_process'
+import path from 'node:path'
 
 var prog = path.resolve(process.argv[2])
 var progArgs = process.argv.slice(3)
@@ -9,8 +9,8 @@ var progArgs = process.argv.slice(3)
 console.log('probing program', prog)
 
 var nodeArgs = [
-  '-r',
-  path.join(__dirname, 'include.js')
+  '--import',
+  path.join(import.meta.dirname, 'include.js')
 ]
 var nodeOpts = { stdio: 'inherit' }
 var child = spawn('node', nodeArgs.concat(prog).concat(progArgs), nodeOpts)

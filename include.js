@@ -1,3 +1,4 @@
-var why = require('./')
+import why from './index.js'
+import siginfo from 'siginfo'
 
-require('siginfo')(why, true)
+siginfo(why, true)
