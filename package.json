@@ -1,6 +1,6 @@
 {
   "name": "why-is-node-running",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "Node is running but you don't know why? why-is-node-running is here to help you.",
   "main": "index.js",
   "dependencies": {
