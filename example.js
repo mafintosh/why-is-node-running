@@ -1,4 +1,4 @@
-import why from './index.js'
+import whyIsNodeRunning from './index.js'
 import net from 'node:net'
 
 function createServer () {
@@ -11,5 +11,5 @@ createServer()
 createServer()
 
 setTimeout(function () {
-  why()
+  whyIsNodeRunning()
 }, 100)

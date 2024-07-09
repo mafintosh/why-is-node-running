@@ -19,7 +19,7 @@ npm i why-is-node-running@v1.x -g
 ## Usage
 
 ```js
-import why from 'why-is-node-running' // should be your first import
+import whyIsNodeRunning from 'why-is-node-running' // should be your first import
 import net from 'node:net'
 
 function createServer () {
@@ -32,7 +32,7 @@ createServer()
 createServer()
 
 setTimeout(function () {
-  why() // logs out active handles that are keeping node running
+  whyIsNodeRunning() // logs out active handles that are keeping node running
 }, 100)
 ```
 

@@ -1,4 +1,4 @@
-import why from './index.js'
+import whyIsNodeRunning from './index.js'
 import siginfo from 'siginfo'
 
-siginfo(why, true)
+siginfo(whyIsNodeRunning, true)
