@@ -13,6 +13,5 @@ var nodeArgs = [
   path.join(import.meta.dirname, 'include.js')
 ]
 var nodeOpts = { stdio: 'inherit' }
-var child = spawn('node', nodeArgs.concat(prog).concat(progArgs), nodeOpts)
 
-console.log('kill -SIGUSR1', child.pid, 'for logging')
+spawn('node', nodeArgs.concat(prog).concat(progArgs), nodeOpts)
