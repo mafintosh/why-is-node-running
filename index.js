@@ -51,13 +51,13 @@ export default function whyIsNodeRunning (logger) {
     } else {
       var padding = ''
       stacks.forEach(function (s) {
-        var pad = (normalizeFileName(s.getFileName()) + ':' + s.getLineNumber()).replace(/./g, ' ')
+        var pad = formatLocation(s).replace(/./g, ' ')
         if (pad.length > padding.length) padding = pad
       })
       stacks.forEach(function (s) {
-        var prefix = normalizeFileName(s.getFileName()) + ':' + s.getLineNumber()
+        var prefix = formatLocation(s)
         try {
-          var src = fs.readFileSync(normalizeFileName(s.getFileName()), 'utf-8').split(/\n|\r\n/)
+          var src = fs.readFileSync(normalizeFilePath(s.getFileName()), 'utf-8').split(/\n|\r\n/)
           logger.error(prefix + padding.slice(prefix.length) + ' - ' + src[s.getLineNumber() - 1].trim())
         } catch (e) {
           logger.error(prefix + padding.slice(prefix.length))
@@ -67,6 +67,24 @@ export default function whyIsNodeRunning (logger) {
   }
 }
 
-function normalizeFileName(fileName) {
-  return fileName.startsWith('file://') ? fileURLToPath(fileName) : fileName
+function formatLocation (stack) {
+  const filePath = formatFilePath(stack.getFileName())
+  return `${filePath}:${stack.getLineNumber()}`
+}
+
+function formatFilePath (filePath) {
+  const absolutePath = normalizeFilePath(filePath)
+  const relativePath = path.relative(process.cwd(), absolutePath)
+
+  // If the file is outside the current working directory, return the absolute path.
+  return relativePath.startsWith('..') ? absolutePath : relativePath
+}
+
+function normalizeFilePath (filePath) {
+  // Convert file:// URLs to file paths.
+  if (filePath.startsWith('file://')) {
+    return fileURLToPath(filePath)
+  }
+
+  return filePath
 }

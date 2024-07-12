@@ -64,20 +64,20 @@ Here's the output:
 There are 4 handle(s) keeping the process running
 
 # Timeout
-/path/to/project/example.js:6  - setInterval(() => {}, 1000)
-/path/to/project/example.js:10 - startServer()
+example.js:6  - setInterval(() => {}, 1000)
+example.js:10 - startServer()
 
 # TCPSERVERWRAP
-/path/to/project/example.js:7  - server.listen(0)
-/path/to/project/example.js:10 - startServer()
+example.js:7  - server.listen(0)
+example.js:10 - startServer()
 
 # Timeout
-/path/to/project/example.js:6  - setInterval(() => {}, 1000)
-/path/to/project/example.js:11 - startServer()
+example.js:6  - setInterval(() => {}, 1000)
+example.js:11 - startServer()
 
 # TCPSERVERWRAP
-/path/to/project/example.js:7  - server.listen(0)
-/path/to/project/example.js:11 - startServer()
+example.js:7  - server.listen(0)
+example.js:11 - startServer()
 ```
 
 ## Usage (as a CLI)
