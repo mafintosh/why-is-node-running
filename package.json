@@ -10,6 +10,12 @@
     },
     "./include": "./include.js"
   },
+  "files": [
+    "cli.js",
+    "include.js",
+    "index.d.ts",
+    "index.js"
+  ],
   "dependencies": {
     "siginfo": "^2.0.0",
     "stackback": "0.0.2"
