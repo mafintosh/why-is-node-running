@@ -1,15 +1,14 @@
-import whyIsNodeRunning from './index.js'
-import net from 'node:net'
+import whyIsNodeRunning from 'why-is-node-running' // should be your first import
+import { createServer } from 'node:net'
 
-function createServer () {
-  var server = net.createServer()
-  setInterval(function () {}, 1000)
+function startServer () {
+  const server = createServer()
+  setInterval(() => {}, 1000)
   server.listen(0)
 }
 
-createServer()
-createServer()
+startServer()
+startServer()
 
-setTimeout(function () {
-  whyIsNodeRunning()
-}, 100)
+// logs out active handles that are keeping node running
+setImmediate(() => whyIsNodeRunning())
