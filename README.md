@@ -1,39 +1,55 @@
 # why-is-node-running
 
-Node is running but you don't know why? `why-is-node-running` is here to help you.
+Node.js is running but you don't know why? `why-is-node-running` is here to help you.
 
 ## Installation
 
-Node 20.11 and above (ECMAScript modules):
+If you want to use `why-is-node-running` in your code, you can install it as a local dependency of your project. If you want to use it as a CLI, you can install it globally, or use `npx` to run it without installing it.
+
+### As a local dependency
+
+Node.js 20.11 and above (ECMAScript modules):
 
 ```bash
-npm i why-is-node-running -g
+npm install --save-dev why-is-node-running
 ```
 
-Node 8 or higher (CommonJS):
+Node.js 8 or higher (CommonJS):
 
 ```bash
-npm i why-is-node-running@v2.x -g
+npm install --save-dev why-is-node-running@v2.x
 ```
 
-## Usage
+### As a global package
+
+```bash
+npm install --global why-is-node-running
+why-is-node-running /path/to/some/file.js
+```
+
+Alternatively if you do not want to install the package globally, you can run it with [`npx`](https://docs.npmjs.com/cli/commands/npx):
+
+```bash
+npx why-is-node-running /path/to/some/file.js
+```
+
+## Usage (as a dependency)
 
 ```js
 import whyIsNodeRunning from 'why-is-node-running' // should be your first import
-import net from 'node:net'
+import { createServer } from 'node:net'
 
-function createServer () {
-  const server = net.createServer()
-  setInterval(function () {}, 1000)
+function startServer () {
+  const server = createServer()
+  setInterval(() => {}, 1000)
   server.listen(0)
 }
 
-createServer()
-createServer()
+startServer()
+startServer()
 
-setTimeout(function () {
-  whyIsNodeRunning() // logs out active handles that are keeping node running
-}, 100)
+// logs out active handles that are keeping node running
+setImmediate(() => whyIsNodeRunning())
 ```
 
 Save the file as `example.js`, then execute:
@@ -45,43 +61,31 @@ node ./example.js
 Here's the output:
 
 ```
-There are 5 handle(s) keeping the process running
+There are 4 handle(s) keeping the process running
 
 # Timeout
-/home/maf/dev/node_modules/why-is-node-running/example.js:6  - setInterval(function () {}, 1000)
-/home/maf/dev/node_modules/why-is-node-running/example.js:10 - createServer()
+/path/to/project/example.js:6  - setInterval(() => {}, 1000)
+/path/to/project/example.js:10 - startServer()
 
 # TCPSERVERWRAP
-/home/maf/dev/node_modules/why-is-node-running/example.js:7  - server.listen(0)
-/home/maf/dev/node_modules/why-is-node-running/example.js:10 - createServer()
+/path/to/project/example.js:7  - server.listen(0)
+/path/to/project/example.js:10 - startServer()
 
 # Timeout
-/home/maf/dev/node_modules/why-is-node-running/example.js:6  - setInterval(function () {}, 1000)
-/home/maf/dev/node_modules/why-is-node-running/example.js:11 - createServer()
+/path/to/project/example.js:6  - setInterval(() => {}, 1000)
+/path/to/project/example.js:11 - startServer()
 
 # TCPSERVERWRAP
-/home/maf/dev/node_modules/why-is-node-running/example.js:7  - server.listen(0)
-/home/maf/dev/node_modules/why-is-node-running/example.js:11 - createServer()
-
-# Timeout
-/home/maf/dev/node_modules/why-is-node-running/example.js:13 - setTimeout(function () {
+/path/to/project/example.js:7  - server.listen(0)
+/path/to/project/example.js:11 - startServer()
 ```
 
-**Important Note!**
-`unref`ed timers do not prevent the Node process from exiting. If you are running with Node v11.0.0 and above, `unref`ed timers will not be listed in the above list. Unfortunately, this is not supported in node versions below v11.0.0.
+## Usage (as a CLI)
 
-## CLI
-
-You can also run `why-is-node-running` as a standalone if you don't want to include it inside your code. Sending `SIGUSR1`/`SIGINFO` signal to the process will produce the log. (`Ctrl + T` on macOS and BSD systems)
+You can run `why-is-node-running` as a standalone if you don't want to include it inside your code. Sending `SIGUSR1`/`SIGINFO` signal to the process will produce the log. (`Ctrl + T` on macOS and BSD systems)
 
 ```bash
 why-is-node-running /path/to/some/file.js
-```
-
-Alternatively if you do not want to install the package globally, you can run it with `npx`:
-
-```bash
-npx why-is-node-running /path/to/some/file.js
 ```
 
 ```
@@ -95,7 +99,7 @@ To trigger the log:
 kill -SIGUSR1 31115
 ```
 
-## Import CLI Option
+## Usage (with Node.js' `--import` option)
 
 You can also use Node's [`--import`](https://nodejs.org/api/cli.html#--importmodule) option to preload `why-is-node-running`:
 
