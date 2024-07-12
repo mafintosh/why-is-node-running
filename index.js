@@ -2,7 +2,6 @@ import { createHook } from 'node:async_hooks'
 import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import stackback from 'stackback'
 
 const IGNORED_TYPES = [
   'TIMERWRAP',
@@ -18,9 +17,13 @@ const hook = createHook({
       return
     }
 
-    const stacks = stackback(new Error()).slice(1)
+    const stacks = captureStackTraces().slice(1)
 
-    asyncResources.set(asyncId, { type, stacks, resource })
+    asyncResources.set(asyncId, {
+      type,
+      resource,
+      stacks
+    })
   },
   destroy (asyncId) {
     asyncResources.delete(asyncId)
@@ -84,4 +87,18 @@ function formatFilePath (filePath) {
 
 function normalizeFilePath (filePath) {
   return filePath.startsWith('file://') ? fileURLToPath(filePath) : filePath
+}
+
+// See: https://v8.dev/docs/stack-trace-api
+function captureStackTraces () {
+  const target = {}
+  const original = Error.prepareStackTrace
+
+  Error.prepareStackTrace = (error, stackTraces) => stackTraces
+  Error.captureStackTrace(target, captureStackTraces)
+
+  const capturedTraces = target.stack
+  Error.prepareStackTrace = original
+
+  return capturedTraces
 }

@@ -16,9 +16,6 @@
     "index.d.ts",
     "index.js"
   ],
-  "dependencies": {
-    "stackback": "0.0.2"
-  },
   "bin": {
     "why-is-node-running": "cli.js"
   },
