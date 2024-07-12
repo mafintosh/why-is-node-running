@@ -4,16 +4,16 @@ Node is running but you don't know why? `why-is-node-running` is here to help yo
 
 ## Installation
 
-Node 8 and above:
+Node 20.11 and above (ECMAScript modules):
 
 ```bash
 npm i why-is-node-running -g
 ```
 
-Earlier Node versions (no longer supported):
+Node 8 or higher (CommonJS):
 
 ```bash
-npm i why-is-node-running@v1.x -g
+npm i why-is-node-running@v2.x -g
 ```
 
 ## Usage
