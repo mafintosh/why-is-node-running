@@ -1,68 +1,71 @@
-import asyncHooks from 'node:async_hooks'
-import fs from 'node:fs'
-import path from 'node:path'
+import { createHook } from 'node:async_hooks'
+import { readFileSync } from 'node:fs'
+import { relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import stackback from 'stackback'
 
-var sep = path.sep
+const IGNORED_TYPES = [
+  'TIMERWRAP',
+  'PROMISE',
+  'PerformanceObserver',
+  'RANDOMBYTESREQUEST'
+]
 
-var active = new Map()
-var hook = asyncHooks.createHook({
+const asyncResources = new Map()
+const hook = createHook({
   init (asyncId, type, triggerAsyncId, resource) {
-    if (type === 'TIMERWRAP' || type === 'PROMISE') return
-    if (type === 'PerformanceObserver' || type === 'RANDOMBYTESREQUEST') return
-    var err = new Error('whatevs')
-    var stacks = stackback(err)
-    active.set(asyncId, {type, stacks, resource})
+    if (IGNORED_TYPES.includes(type)) {
+      return
+    }
+
+    const stacks = stackback(new Error()).slice(1)
+
+    asyncResources.set(asyncId, { type, stacks, resource })
   },
   destroy (asyncId) {
-    active.delete(asyncId)
+    asyncResources.delete(asyncId)
   }
 })
 
 hook.enable()
 
-export default function whyIsNodeRunning (logger) {
-  if (!logger) logger = console
-
+export default function whyIsNodeRunning (logger = console) {
   hook.disable()
-  var activeResources = [...active.values()].filter(function(r) {
-    if (
-      typeof r.resource.hasRef === 'function'
-      && !r.resource.hasRef()
-    ) return false
-    return true
-  })
 
-  logger.error('There are %d handle(s) keeping the process running', activeResources.length)
-  for (const o of activeResources) printStacks(o)
+  const activeAsyncResources = Array.from(asyncResources.values())
+    .filter(({ resource }) => resource.hasRef?.() ?? true)
 
-  function printStacks (o) {
-    var stacks = o.stacks.slice(1).filter(function (s) {
-      var filename = s.getFileName()
-      return filename && filename.indexOf(sep) > -1 && filename.indexOf('internal' + sep) !== 0 && filename.indexOf('node:internal' + sep) !== 0
-    })
+  logger.error(`There are ${activeAsyncResources.length} handle(s) keeping the process running.`)
 
-    logger.error('')
-    logger.error('# %s', o.type)
+  for (const asyncResource of activeAsyncResources) {
+    printStacks(asyncResource, logger)
+  }
+}
 
-    if (!stacks[0]) {
-      logger.error('(unknown stack trace)')
-    } else {
-      var padding = ''
-      stacks.forEach(function (s) {
-        var pad = formatLocation(s).replace(/./g, ' ')
-        if (pad.length > padding.length) padding = pad
-      })
-      stacks.forEach(function (s) {
-        var prefix = formatLocation(s)
-        try {
-          var src = fs.readFileSync(normalizeFilePath(s.getFileName()), 'utf-8').split(/\n|\r\n/)
-          logger.error(prefix + padding.slice(prefix.length) + ' - ' + src[s.getLineNumber() - 1].trim())
-        } catch (e) {
-          logger.error(prefix + padding.slice(prefix.length))
-        }
-      })
+function printStacks (asyncResource, logger) {
+  const stacks = asyncResource.stacks.filter((stack) => !stack.getFileName().startsWith('node:'))
+
+  logger.error('')
+  logger.error(`# ${asyncResource.type}`)
+
+  if (!stacks[0]) {
+    logger.error('(unknown stack trace)')
+    return
+  }
+
+  const maxLength = stacks.reduce((length, stack) => Math.max(length, formatLocation(stack).length), 0)
+
+  for (const stack of stacks) {
+    const location = formatLocation(stack)
+    const padding = ' '.repeat(maxLength - location.length)
+    
+    try {
+      const lines = readFileSync(normalizeFilePath(stack.getFileName()), 'utf-8').split(/\n|\r\n/)
+      const line = lines[stack.getLineNumber() - 1].trim()
+
+      logger.error(`${location}${padding} - ${line}`)
+    } catch (e) {
+      logger.error(`${location}${padding}`)
     }
   }
 }
@@ -74,17 +77,11 @@ function formatLocation (stack) {
 
 function formatFilePath (filePath) {
   const absolutePath = normalizeFilePath(filePath)
-  const relativePath = path.relative(process.cwd(), absolutePath)
+  const relativePath = relative(process.cwd(), absolutePath)
 
-  // If the file is outside the current working directory, return the absolute path.
   return relativePath.startsWith('..') ? absolutePath : relativePath
 }
 
 function normalizeFilePath (filePath) {
-  // Convert file:// URLs to file paths.
-  if (filePath.startsWith('file://')) {
-    return fileURLToPath(filePath)
-  }
-
-  return filePath
+  return filePath.startsWith('file://') ? fileURLToPath(filePath) : filePath
 }

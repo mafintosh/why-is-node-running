@@ -1,17 +1,16 @@
 #!/usr/bin/env node
-
 import { spawn } from 'node:child_process'
 import path from 'node:path'
 
-var prog = path.resolve(process.argv[2])
-var progArgs = process.argv.slice(3)
+const [prog, ...progArgs] = process.argv.slice(2)
 
-console.log('probing program', prog)
+console.info('probing program', prog)
 
-var nodeArgs = [
+const args = [
   '--import',
-  path.join(import.meta.dirname, 'include.js')
+  path.join(import.meta.dirname, 'include.js'),
+  prog,
+  ...progArgs
 ]
-var nodeOpts = { stdio: 'inherit' }
 
-spawn('node', nodeArgs.concat(prog).concat(progArgs), nodeOpts)
+spawn('node', args, { stdio: 'inherit' })
