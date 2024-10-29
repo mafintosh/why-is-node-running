@@ -46,7 +46,10 @@ export default function whyIsNodeRunning (logger = console) {
 }
 
 function printStacks (asyncResource, logger) {
-  const stacks = asyncResource.stacks.filter((stack) => !stack.getFileName().startsWith('node:'))
+  const stacks = asyncResource.stacks.filter((stack) => {
+    const fileName = stack.getFileName()
+    return fileName !== null && !fileName.startsWith('node:')
+  })
 
   logger.error('')
   logger.error(`# ${asyncResource.type}`)
