@@ -21,7 +21,7 @@ const hook = createHook({
 
     asyncResources.set(asyncId, {
       type,
-      resource,
+      resourceRef: new WeakRef(resource),
       stacks
     })
   },
@@ -36,7 +36,15 @@ export default function whyIsNodeRunning (logger = console) {
   hook.disable()
 
   const activeAsyncResources = Array.from(asyncResources.values())
-    .filter(({ resource }) => resource.hasRef?.() ?? true)
+    .filter(({ resourceRef }) => {
+      const resource = resourceRef.deref();
+
+      if (resource === undefined) {
+        return false;
+      }
+  
+      return resource.hasRef?.() ?? true;
+    });
 
   logger.error(`There are ${activeAsyncResources.length} handle(s) keeping the process running.`)
 
