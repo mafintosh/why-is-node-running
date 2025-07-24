@@ -2,6 +2,7 @@ import { createHook } from 'node:async_hooks'
 import { readFileSync } from 'node:fs'
 import { relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { getCallSites } from 'node:util'
 
 const IGNORED_TYPES = [
   'TIMERWRAP',
@@ -17,7 +18,7 @@ const hook = createHook({
       return
     }
 
-    const stacks = captureStackTraces().slice(1)
+    const stacks = getCallSites().slice(1)
 
     asyncResources.set(asyncId, {
       type,
@@ -42,7 +43,7 @@ export default function whyIsNodeRunning (logger = console) {
       if (resource === undefined) {
         return false
       }
-  
+
       return resource.hasRef?.() ?? true
     })
 
@@ -55,7 +56,7 @@ export default function whyIsNodeRunning (logger = console) {
 
 function printStacks (asyncResource, logger) {
   const stacks = asyncResource.stacks.filter((stack) => {
-    const fileName = stack.fileName
+    const fileName = stack.scriptName
     return fileName !== null && !fileName.startsWith('node:')
   })
 
@@ -72,9 +73,9 @@ function printStacks (asyncResource, logger) {
   for (const stack of stacks) {
     const location = formatLocation(stack)
     const padding = ' '.repeat(maxLength - location.length)
-    
+
     try {
-      const lines = readFileSync(normalizeFilePath(stack.fileName), 'utf-8').split(/\n|\r\n/)
+      const lines = readFileSync(normalizeFilePath(stack.scriptName), 'utf-8').split(/\n|\r\n/)
       const line = lines[stack.lineNumber - 1].trim()
 
       logger.error(`${location}${padding} - ${line}`)
@@ -85,7 +86,7 @@ function printStacks (asyncResource, logger) {
 }
 
 function formatLocation (stack) {
-  const filePath = formatFilePath(stack.fileName)
+  const filePath = formatFilePath(stack.scriptName)
   return `${filePath}:${stack.lineNumber}`
 }
 
@@ -98,25 +99,4 @@ function formatFilePath (filePath) {
 
 function normalizeFilePath (filePath) {
   return filePath.startsWith('file://') ? fileURLToPath(filePath) : filePath
-}
-
-function prepareStackTrace(error, stackTraces) {
-  return stackTraces.map(stack => ({
-    lineNumber: stack.getLineNumber(),
-    fileName: stack.getFileName()
-  }))
-}
-
-// See: https://v8.dev/docs/stack-trace-api
-function captureStackTraces () {
-  const target = {}
-  const original = Error.prepareStackTrace
-
-  Error.prepareStackTrace = prepareStackTrace
-  Error.captureStackTrace(target, captureStackTraces)
-
-  const capturedTraces = target.stack
-  Error.prepareStackTrace = original
-
-  return capturedTraces
 }
