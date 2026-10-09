@@ -3,22 +3,23 @@ on:
   release:
     types: [published]
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/checkout@v7
         with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org
+          persist-credentials: false
 
-      - name: Publish to NPM
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: package.json
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Stage release on npm
+        run: npm stage publish
