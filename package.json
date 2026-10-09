@@ -22,9 +22,16 @@
   "engines": {
     "node": ">=20.11"
   },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "26",
+      "onFail": "download"
+    }
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mafintosh/why-is-node-running.git"
+    "url": "git+https://github.com/mafintosh/why-is-node-running.git"
   },
   "keywords": [
     "debug",
